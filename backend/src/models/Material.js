@@ -9,6 +9,7 @@ const materialSchema = new mongoose.Schema(
       required: true,
       enum: ["Infrastructure", "Interior"]
     },
+    subcategory: { type: String, default: "", trim: true },
     imageUrl: { type: String, required: true },
     videoUrl: { type: String, default: "" }
   },

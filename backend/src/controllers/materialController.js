@@ -8,7 +8,7 @@ const getMaterials = asyncHandler(async (_req, res) => {
 });
 
 const createMaterial = asyncHandler(async (req, res) => {
-  const { name, brand, category } = req.body;
+  const { name, brand, category, subcategory } = req.body;
   const imageFile = req.files?.image?.[0];
   const videoFile = req.files?.video?.[0];
 
@@ -24,6 +24,7 @@ const createMaterial = asyncHandler(async (req, res) => {
     name,
     brand,
     category,
+    subcategory: subcategory || "",
     imageUrl,
     videoUrl
   });
@@ -40,6 +41,7 @@ const updateMaterial = asyncHandler(async (req, res) => {
   material.name = req.body.name || material.name;
   material.brand = req.body.brand || material.brand;
   material.category = req.body.category || material.category;
+  material.subcategory = req.body.subcategory !== undefined ? req.body.subcategory : material.subcategory;
   if (req.files?.image?.[0]) {
     material.imageUrl = await uploadSingleMedia(
       req,

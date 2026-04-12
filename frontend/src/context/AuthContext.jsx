@@ -9,12 +9,16 @@ export const AuthProvider = ({ children }) => {
     JSON.parse(localStorage.getItem("adminData") || "null")
   );
 
+  const setSession = (newToken, adminData) => {
+    setToken(newToken);
+    setAdmin(adminData);
+    localStorage.setItem("adminToken", newToken);
+    localStorage.setItem("adminData", JSON.stringify(adminData));
+  };
+
   const login = async (email, password) => {
     const { data } = await api.post("/auth/login", { email, password });
-    setToken(data.token);
-    setAdmin(data.admin);
-    localStorage.setItem("adminToken", data.token);
-    localStorage.setItem("adminData", JSON.stringify(data.admin));
+    setSession(data.token, data.admin);
   };
 
   const logout = () => {
@@ -25,7 +29,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, admin, login, logout }}>
+    <AuthContext.Provider value={{ token, admin, login, setSession, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -9,17 +9,25 @@ const protectAdmin = asyncHandler(async (req, res, next) => {
     throw new Error("Not authorized, token missing");
   }
 
-  const token = authHeader.split(" ")[1];
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  const admin = await Admin.findById(decoded.id).select("-password");
+  try {
+    const token = authHeader.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const admin = await Admin.findById(decoded.id).select("-password");
 
-  if (!admin) {
+    if (!admin) {
+      res.status(401);
+      throw new Error("Not authorized, admin not found");
+    }
+
+    req.admin = admin;
+    next();
+  } catch (error) {
     res.status(401);
-    throw new Error("Not authorized, admin not found");
+    if (error.name === "TokenExpiredError") {
+      throw new Error("Not authorized, token expired");
+    }
+    throw new Error("Not authorized, token invalid");
   }
-
-  req.admin = admin;
-  next();
 });
 
 module.exports = { protectAdmin };

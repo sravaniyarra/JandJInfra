@@ -10,6 +10,7 @@ import AdminPanel from "./pages/AdminPanel";
 import LoginPage from "./pages/LoginPage";
 import BudgetPlannerPage from "./pages/BudgetPlannerPage";
 import ContactPage from "./pages/ContactPage";
+import SolutionDetailPage from "./pages/SolutionDetailPage";
 
 export default function App() {
   const location = useLocation();
@@ -39,6 +40,7 @@ export default function App() {
           }
         />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/solutions/:slug" element={<SolutionDetailPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route
           path="/admin"

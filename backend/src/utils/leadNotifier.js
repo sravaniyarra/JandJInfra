@@ -47,22 +47,60 @@ const sendWhatsAppNotification = async (lead) => {
     TWILIO_WHATSAPP_FROM,
     TWILIO_WHATSAPP_TO
   } = process.env;
-  if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN || !TWILIO_WHATSAPP_FROM || !TWILIO_WHATSAPP_TO) return;
+  if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN || !TWILIO_WHATSAPP_FROM) return;
 
   const client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
-  await client.messages.create({
-    from: TWILIO_WHATSAPP_FROM,
-    to: TWILIO_WHATSAPP_TO,
-    body: `New Designer Lead:
-Name: ${lead.name}
-Phone: ${lead.phone}
-City: ${lead.city}
-WhatsApp Opt-In: ${lead.whatsappOptIn ? "Yes" : "No"}`
-  });
+
+  // Notify admin about the new lead
+  if (TWILIO_WHATSAPP_TO) {
+    await client.messages.create({
+      from: TWILIO_WHATSAPP_FROM,
+      to: TWILIO_WHATSAPP_TO,
+      body: `New Designer Lead:\nName: ${lead.name}\nPhone: ${lead.phone}\nCity: ${lead.city}`
+    });
+  }
+
+  // Send confirmation to the user if they opted in
+  if (lead.whatsappOptIn && lead.phone) {
+    const userNumber = formatWhatsAppNumber(lead.phone);
+    if (userNumber) {
+      await client.messages.create({
+        from: TWILIO_WHATSAPP_FROM,
+        to: userNumber,
+        body: `Hi ${lead.name}, thank you for your interest in J & J Infra! Our designer will contact you shortly to discuss your requirements for ${lead.city}. Stay tuned!`
+      });
+    }
+  }
+};
+
+/**
+ * Normalize a phone number into whatsapp:+91XXXXXXXXXX format.
+ * Accepts: "9876543210", "+919876543210", "919876543210", "09876543210"
+ */
+const formatWhatsAppNumber = (phone) => {
+  const digits = String(phone).replace(/[^\d]/g, "");
+  if (!digits || digits.length < 10) return null;
+
+  // Already has country code (e.g. 919876543210)
+  if (digits.length >= 12) return `whatsapp:+${digits}`;
+  // 10-digit Indian number
+  if (digits.length === 10) return `whatsapp:+91${digits}`;
+  // 11-digit with leading 0 (e.g. 09876543210)
+  if (digits.length === 11 && digits.startsWith("0")) return `whatsapp:+91${digits.slice(1)}`;
+
+  return `whatsapp:+${digits}`;
 };
 
 const notifyLeadCreated = async (lead) => {
-  await Promise.allSettled([sendEmailNotification(lead), sendWhatsAppNotification(lead)]);
+  const results = await Promise.allSettled([sendEmailNotification(lead), sendWhatsAppNotification(lead)]);
+  results.forEach((result, index) => {
+    const label = index === 0 ? "Email" : "WhatsApp";
+    if (result.status === "fulfilled") {
+      console.log(`[LeadNotifier] ${label} notification sent successfully`);
+    } else {
+      console.error(`[LeadNotifier] ${label} notification failed:`, result.reason?.message || result.reason);
+    }
+  });
 };
 
 module.exports = { notifyLeadCreated };

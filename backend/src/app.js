@@ -8,6 +8,9 @@ const projectRoutes = require("./routes/projectRoutes");
 const authRoutes = require("./routes/authRoutes");
 const budgetRoutes = require("./routes/budgetRoutes");
 const leadRoutes = require("./routes/leadRoutes");
+const solutionGalleryRoutes = require("./routes/solutionGalleryRoutes");
+const notificationRoutes = require("./routes/notificationRoutes");
+
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
 const app = express();
@@ -28,6 +31,9 @@ app.use("/api/materials", materialRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/budget", budgetRoutes);
 app.use("/api/leads", leadRoutes);
+app.use("/api/solution-gallery", solutionGalleryRoutes);
+app.use("/api/notifications", notificationRoutes);
+app.use("/api/solution-gallery", solutionGalleryRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

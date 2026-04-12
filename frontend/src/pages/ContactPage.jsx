@@ -21,10 +21,10 @@ const contacts = [
 export default function ContactPage() {
   return (
     <div className="space-y-6">
-      <div className="rounded-3xl border border-sky-100 bg-[#f4faff] p-6 shadow-soft">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Leadership & Delivery</p>
-        <h2 className="mt-2 text-3xl font-semibold tracking-tight">Contact</h2>
-        <p className="mt-1 text-sm text-slate-600">
+      <div className="rounded-4xl border border-line bg-gradient-to-br from-surface to-elevated/50 p-6 shadow-lift dark:to-elevated/30">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-subtle">Leadership & Delivery</p>
+        <h2 className="font-display mt-2 text-3xl font-bold tracking-tight text-ink">Contact</h2>
+        <p className="mt-1 text-sm leading-relaxed text-subtle">
           Meet the core people behind this platform and reach out for collaboration or business inquiries.
         </p>
       </div>
@@ -33,36 +33,36 @@ export default function ContactPage() {
         {contacts.map((person) => {
           const Icon = person.icon;
           return (
-            <Card key={person.name} className="border-sky-100 bg-[#f8fdff] transition hover:-translate-y-0.5 hover:shadow-lg">
+            <Card key={person.name} className="transition hover:-translate-y-1 hover:shadow-lift">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <h3 className="text-lg font-semibold text-slate-900">{person.name}</h3>
-                  <p className="mt-1 inline-flex items-center rounded-full border border-sky-100 bg-[#eef6ff] px-2.5 py-1 text-xs text-slate-600">
+                  <h3 className="font-display text-lg font-bold text-ink">{person.name}</h3>
+                  <p className="mt-1 inline-flex items-center rounded-full border border-line bg-accent-muted px-2.5 py-1 text-xs font-medium text-subtle">
                     {person.role}
                   </p>
                 </div>
-                <div className="rounded-2xl bg-sky-100 p-2 text-slate-700">
+                <div className="rounded-2xl border border-line bg-accent-muted p-2 text-accent">
                   <Icon className="h-4 w-4" />
                 </div>
               </div>
-              <p className="mt-4 text-sm leading-6 text-slate-600">{person.description}</p>
+              <p className="mt-4 text-sm leading-relaxed text-subtle">{person.description}</p>
             </Card>
           );
         })}
       </div>
 
-      <Card className="bg-[#f8fdff]">
-        <h3 className="text-base font-semibold">General Communication</h3>
-        <p className="mt-1 text-sm text-slate-500">
+      <Card>
+        <h3 className="font-display text-base font-bold text-ink">General Communication</h3>
+        <p className="mt-1 text-sm text-subtle">
           For partnerships, implementation support, or technical discussions, connect through your preferred channel.
         </p>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          <div className="flex items-center gap-2 rounded-2xl border border-sky-100 bg-[#eef6ff] px-3 py-2 text-sm text-slate-700">
-            <Mail className="h-4 w-4 text-slate-500" />
+          <div className="flex items-center gap-2 rounded-2xl border border-line bg-elevated/60 px-3 py-2 text-sm text-ink dark:bg-elevated/40">
+            <Mail className="h-4 w-4 text-accent" />
             contact@projectplatform.com
           </div>
-          <div className="flex items-center gap-2 rounded-2xl border border-sky-100 bg-[#eef6ff] px-3 py-2 text-sm text-slate-700">
-            <Phone className="h-4 w-4 text-slate-500" />
+          <div className="flex items-center gap-2 rounded-2xl border border-line bg-elevated/60 px-3 py-2 text-sm text-ink dark:bg-elevated/40">
+            <Phone className="h-4 w-4 text-accent" />
             +91-XXXXXXXXXX
           </div>
         </div>

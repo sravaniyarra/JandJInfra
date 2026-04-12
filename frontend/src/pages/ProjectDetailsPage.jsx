@@ -23,25 +23,28 @@ export default function ProjectDetailsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-3xl border border-sky-100 bg-[#f4faff] p-6 shadow-soft">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Project Narrative</p>
-        <h2 className="mt-2 text-3xl font-semibold tracking-tight">{project.name}</h2>
-        <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">{project.description}</p>
+      <div className="rounded-4xl border border-line bg-gradient-to-br from-surface to-elevated/50 p-6 shadow-lift dark:to-elevated/30">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-subtle">Project Narrative</p>
+        <h2 className="font-display mt-2 text-3xl font-bold tracking-tight text-ink">{project.name}</h2>
+        <p className="mt-2 max-w-3xl text-sm leading-relaxed text-subtle">{project.description}</p>
       </div>
 
-      <Card className="bg-[#f8fdff]">
-        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-500">Materials Used</h3>
+      <Card>
+        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-subtle">Materials Used</h3>
         <div className="flex flex-wrap gap-2">
           {project.materialsUsed?.map((m) => (
-            <span key={m._id} className="rounded-full border border-sky-100 bg-[#eef6ff] px-3 py-1.5 text-sm">
+            <span
+              key={m._id}
+              className="rounded-full border border-line bg-accent-muted px-3 py-1.5 text-sm font-medium text-ink"
+            >
               {m.name} - {m.brand}
             </span>
           ))}
         </div>
       </Card>
 
-      <Card className="bg-[#f8fdff]">
-        <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">Image Gallery</h3>
+      <Card>
+        <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-subtle">Image Gallery</h3>
         <div className="grid gap-4 md:grid-cols-3">
           {project.images?.map((img) => (
             <img key={img} src={img} alt="project asset" className="aspect-video w-full rounded-2xl object-cover" />
@@ -49,11 +52,11 @@ export default function ProjectDetailsPage() {
         </div>
       </Card>
 
-      <Card className="bg-[#f8fdff]">
-        <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">Videos</h3>
+      <Card>
+        <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-subtle">Videos</h3>
         <div className="grid gap-4 md:grid-cols-2">
           {project.videos?.map((video) => (
-            <video key={video} controls className="w-full rounded-2xl border border-sky-100">
+            <video key={video} controls className="w-full rounded-2xl border border-line bg-ink">
               <source src={video} />
             </video>
           ))}

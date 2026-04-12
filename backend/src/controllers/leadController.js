@@ -1,5 +1,6 @@
 const asyncHandler = require("../utils/asyncHandler");
 const Lead = require("../models/Lead");
+const Notification = require("../models/Notification");
 const { notifyLeadCreated } = require("../utils/leadNotifier");
 
 const createLead = asyncHandler(async (req, res) => {
@@ -18,6 +19,13 @@ const createLead = asyncHandler(async (req, res) => {
 
   await notifyLeadCreated(lead);
 
+  await Notification.create({
+    type: "new_lead",
+    title: "New Designer Request",
+    message: `${lead.name} from ${lead.city} requested a designer consultation (${lead.phone})`,
+    meta: { leadId: lead._id, name: lead.name, phone: lead.phone, city: lead.city }
+  });
+
   res.status(201).json({
     message: "Designer request submitted successfully",
     leadId: lead._id
@@ -25,10 +33,9 @@ const createLead = asyncHandler(async (req, res) => {
 });
 
 const getLeads = asyncHandler(async (_req, res) => {
-  const leads = await Lead.find().sort({ createdAt: -1 });
+  const leads = await Lead.find();
   res.json(leads);
 });
-
 const updateLeadStatus = asyncHandler(async (req, res) => {
   const { status } = req.body;
   if (!["new", "contacted", "converted"].includes(status)) {

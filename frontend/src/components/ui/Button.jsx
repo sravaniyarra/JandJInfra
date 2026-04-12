@@ -1,15 +1,17 @@
 import clsx from "clsx";
 
 const styles = {
-  primary: "bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500 text-white hover:brightness-95",
-  ghost: "bg-white text-slate-700 hover:bg-sky-50 border border-sky-100"
+  primary: "bg-accent text-accent-fg shadow-soft hover:brightness-110 active:scale-[0.98]",
+  ghost:
+    "border border-line bg-surface text-ink hover:bg-elevated hover:border-accent/25 dark:bg-surface/80",
+  outline: "border-2 border-accent/40 bg-transparent text-accent hover:bg-accent-muted"
 };
 
 export default function Button({ variant = "primary", className, ...props }) {
   return (
     <button
       className={clsx(
-        "inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ink/20 disabled:cursor-not-allowed disabled:opacity-50",
+        "inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas disabled:cursor-not-allowed disabled:opacity-45",
         styles[variant],
         className
       )}

@@ -1,15 +1,35 @@
-export default function BrandLogo({ compact = false }) {
+import clsx from "clsx";
+
+export default function BrandLogo({ compact = false, variant = "default" }) {
+  const isSidebar = variant === "sidebar";
+
   return (
     <div className="flex items-center gap-3">
-      <div className="relative h-10 w-10 overflow-hidden rounded-xl border border-sky-100 bg-white">
+      <div
+        className={clsx(
+          "relative overflow-hidden rounded-xl border shadow-soft",
+          isSidebar ? "h-11 w-11 border-white/15 bg-white/10" : "h-10 w-10 border-line bg-surface"
+        )}
+      >
         <img src="/brand-logo.jpg" alt="J&J Infra logo" className="h-full w-full object-cover" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-accent/20 to-transparent" />
       </div>
       {!compact ? (
         <div>
-          <p className="text-xl font-bold leading-none text-transparent bg-clip-text bg-gradient-to-r from-sky-500 via-cyan-400 to-emerald-500">
-            J&J INFRA
+          <p
+            className={clsx(
+              "font-display text-xl font-bold leading-none tracking-tight",
+              isSidebar ? "text-on-sidebar" : "text-gradient-accent"
+            )}
+          >
+            J&amp;J INFRA
           </p>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+          <p
+            className={clsx(
+              "mt-0.5 text-[10px] font-semibold uppercase tracking-[0.2em]",
+              isSidebar ? "text-on-sidebar-muted" : "text-subtle"
+            )}
+          >
             We Design Your Home
           </p>
         </div>
