@@ -1,0 +1,28 @@
+{
+  "name": "infra-demo-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:force": "vite --force",
+    "build": "vite build",
+    "preview": "vite preview",
+    "clean": "node -e \"const fs=require('fs');const p='node_modules/.vite';if(fs.existsSync(p)){fs.rmSync(p,{recursive:true,force:true});console.log('cleared',p)}else{console.log('no cache to clear')}\""
+  },
+  "dependencies": {
+    "axios": "^1.7.5",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.468.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13",
+    "vite": "^5.4.2"
+  }
+}
