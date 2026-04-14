@@ -2,6 +2,7 @@ import clsx from "clsx";
 
 export default function BrandLogo({ compact = false, variant = "default" }) {
   const isSidebar = variant === "sidebar";
+  const logoSrc = `${import.meta.env.BASE_URL}brand-logo.jpg`;
 
   return (
     <div className="flex items-center gap-3">
@@ -11,7 +12,7 @@ export default function BrandLogo({ compact = false, variant = "default" }) {
           isSidebar ? "h-11 w-11 border-white/15 bg-white/10" : "h-10 w-10 border-line bg-surface"
         )}
       >
-        <img src="/brand-logo.jpg" alt="J&J Infra logo" className="h-full w-full object-cover" />
+        <img src={logoSrc} alt="J&J Infra logo" className="h-full w-full object-cover" />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-accent/20 to-transparent" />
       </div>
       {!compact ? (
