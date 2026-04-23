@@ -42,7 +42,11 @@ export default function LoginPage() {
       setStep("otp");
       setResendCooldown(30);
     } catch (err) {
-      setError(err.response?.data?.message || "Invalid credentials");
+      if (!err.response) {
+        setError("Unable to reach server. Please try again in a moment.");
+      } else {
+        setError(err.response?.data?.message || "Invalid credentials");
+      }
     } finally {
       setLoading(false);
     }
