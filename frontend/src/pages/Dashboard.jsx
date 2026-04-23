@@ -43,7 +43,7 @@ const heroSlides = [
     title: "From concept to move-in, seamlessly.",
     subtitle: "End-to-end execution with transparent budgets and timelines.",
     image:
-      "https://images.unsplash.com/photo-1616594039964-3f9f8f0f8f68?auto=format&fit=crop&w=1600&q=80"
+      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1600&q=80"
   },
   {
     title: "Designed with precision, built with care.",

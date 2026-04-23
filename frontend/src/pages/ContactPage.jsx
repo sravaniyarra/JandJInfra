@@ -59,11 +59,11 @@ export default function ContactPage() {
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           <div className="flex items-center gap-2 rounded-2xl border border-line bg-elevated/60 px-3 py-2 text-sm text-ink dark:bg-elevated/40">
             <Mail className="h-4 w-4 text-accent" />
-            contact@projectplatform.com
+            trb234@gmail.com
           </div>
           <div className="flex items-center gap-2 rounded-2xl border border-line bg-elevated/60 px-3 py-2 text-sm text-ink dark:bg-elevated/40">
             <Phone className="h-4 w-4 text-accent" />
-            +91-XXXXXXXXXX
+            +91-8340002349
           </div>
         </div>
       </Card>

@@ -4,39 +4,54 @@ const asyncHandler = require("../utils/asyncHandler");
 const Admin = require("../models/Admin");
 const generateToken = require("../utils/generateToken");
 
-const sendOtpEmail = async (email, otp) => {
+const getSmtpConfig = () => {
   const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
   if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASS) {
-    console.warn("[Auth] SMTP not configured, OTP:", otp);
-    return;
+    throw new Error("OTP email service is not configured on the server.");
   }
 
-  const transporter = nodemailer.createTransport({
+  return {
     host: SMTP_HOST,
     port: Number(SMTP_PORT),
-    secure: Number(SMTP_PORT) === 465,
-    auth: { user: SMTP_USER, pass: SMTP_PASS }
+    user: SMTP_USER,
+    pass: SMTP_PASS
+  };
+};
+
+const sendOtpEmail = async (email, otp) => {
+  const { host, port, user, pass } = getSmtpConfig();
+
+  const transporter = nodemailer.createTransport({
+    host,
+    port,
+    secure: port === 465,
+    auth: { user, pass }
   });
 
-  await transporter.sendMail({
-    from: SMTP_USER,
-    to: email,
-    subject: "J&J Infra - Login OTP",
-    html: `
-      <div style="font-family:Arial,sans-serif;background:#f8f6f1;padding:20px">
-        <div style="max-width:420px;margin:auto;background:#fff;border:1px solid #e5dccf;border-radius:14px;padding:24px;text-align:center">
-          <h2 style="margin:0 0 8px;color:#1f2937">Login Verification</h2>
-          <p style="margin:0 0 20px;color:#6b7280;font-size:14px">Use this OTP to complete your sign in</p>
-          <div style="background:#f0fdfa;border:2px solid #0f766e;border-radius:12px;padding:16px;margin:0 auto 16px;max-width:200px">
-            <span style="font-size:32px;font-weight:bold;letter-spacing:8px;color:#0f766e">${otp}</span>
+  try {
+    await transporter.sendMail({
+      from: user,
+      to: email,
+      subject: "J&J Infra - Login OTP",
+      html: `
+        <div style="font-family:Arial,sans-serif;background:#f8f6f1;padding:20px">
+          <div style="max-width:420px;margin:auto;background:#fff;border:1px solid #e5dccf;border-radius:14px;padding:24px;text-align:center">
+            <h2 style="margin:0 0 8px;color:#1f2937">Login Verification</h2>
+            <p style="margin:0 0 20px;color:#6b7280;font-size:14px">Use this OTP to complete your sign in</p>
+            <div style="background:#f0fdfa;border:2px solid #0f766e;border-radius:12px;padding:16px;margin:0 auto 16px;max-width:200px">
+              <span style="font-size:32px;font-weight:bold;letter-spacing:8px;color:#0f766e">${otp}</span>
+            </div>
+            <p style="color:#9ca3af;font-size:12px">This code expires in 5 minutes. Do not share it.</p>
+            <p style="margin-top:16px;color:#d1d5db;font-size:11px">J & J Infra • Secure Login</p>
           </div>
-          <p style="color:#9ca3af;font-size:12px">This code expires in 5 minutes. Do not share it.</p>
-          <p style="margin-top:16px;color:#d1d5db;font-size:11px">J & J Infra • Secure Login</p>
         </div>
-      </div>
-    `,
-    text: `Your J&J Infra login OTP is: ${otp}. It expires in 5 minutes.`
-  });
+      `,
+      text: `Your J&J Infra login OTP is: ${otp}. It expires in 5 minutes.`
+    });
+  } catch (error) {
+    console.error("[Auth] OTP email send failed:", error.message);
+    throw new Error("Unable to send OTP email right now. Please try again shortly.");
+  }
 };
 
 const loginAdmin = asyncHandler(async (req, res) => {
